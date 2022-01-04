@@ -108,14 +108,15 @@ ActiveRecord::Schema.define(version: 2022_01_04_060202) do
     t.string "unconfirmed_email"
     t.string "user_name"
     t.string "user_image"
+    t.string "email"
     t.integer "school_id", null: false
     t.integer "group_id", null: false
     t.boolean "user_is_student"
     t.text "tokens"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index "\"email\"", name: "index_users_on_email", unique: true
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["group_id"], name: "index_users_on_group_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["school_id"], name: "index_users_on_school_id"
