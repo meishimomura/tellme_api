@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  school: one
+  master_user_name: MyString
+  master_user_password: MyString
+
+two:
+  school: two
+  master_user_name: MyString
+  master_user_password: MyString

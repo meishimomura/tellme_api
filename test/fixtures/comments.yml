@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  subject: one
+  user: one
+  comment_content: MyText
+  comment_is_checked: false
+
+two:
+  subject: two
+  user: two
+  comment_content: MyText
+  comment_is_checked: false
