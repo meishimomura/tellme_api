@@ -1,3 +1,4 @@
 class Group < ApplicationRecord
-  has_many :groups, dependent: :destroy
+  belongs_to :school
+  has_many :users, dependent: :destroy
 end

@@ -3,6 +3,7 @@ class CreateGroups < ActiveRecord::Migration[6.1]
     create_table :groups do |t|
       t.string :group_name
       t.integer :group_grade
+      t.references :school, null: false, foreign_key: true
 
       t.timestamps
     end
