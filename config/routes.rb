@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       end
 
       resources :schools
+      resources :groups
     end
   end
 end
