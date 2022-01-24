@@ -50,8 +50,10 @@ ActiveRecord::Schema.define(version: 2022_01_04_060202) do
   create_table "groups", force: :cascade do |t|
     t.string "group_name"
     t.integer "group_grade"
+    t.integer "school_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_groups_on_school_id"
   end
 
   create_table "master_users", force: :cascade do |t|
@@ -138,6 +140,7 @@ ActiveRecord::Schema.define(version: 2022_01_04_060202) do
   add_foreign_key "course_directors", "users", column: "uid", primary_key: "uid"
   add_foreign_key "group_directors", "groups"
   add_foreign_key "group_directors", "subjects"
+  add_foreign_key "groups", "schools"
   add_foreign_key "master_users", "schools"
   add_foreign_key "notification_checks", "notifications"
   add_foreign_key "notification_checks", "users", column: "uid", primary_key: "uid"
