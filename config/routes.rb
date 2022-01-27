@@ -15,7 +15,7 @@ Rails.application.routes.draw do
         resources :subjects, only: %i[show]
       end
 
-      resources :schools, :groups
+      resources :schools, :groups, :subjects
     end
   end
 end
