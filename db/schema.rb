@@ -34,8 +34,10 @@ ActiveRecord::Schema.define(version: 2022_01_04_060202) do
 
   create_table "course_directors", force: :cascade do |t|
     t.string "uid", null: false
+    t.integer "subject_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["subject_id"], name: "index_course_directors_on_subject_id"
   end
 
   create_table "group_directors", force: :cascade do |t|
@@ -137,6 +139,7 @@ ActiveRecord::Schema.define(version: 2022_01_04_060202) do
   add_foreign_key "comments", "comments", column: "parent_comment_id"
   add_foreign_key "comments", "subjects"
   add_foreign_key "comments", "users", column: "uid", primary_key: "uid"
+  add_foreign_key "course_directors", "subjects"
   add_foreign_key "course_directors", "users", column: "uid", primary_key: "uid"
   add_foreign_key "group_directors", "groups"
   add_foreign_key "group_directors", "subjects"
