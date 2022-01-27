@@ -3,6 +3,7 @@ class CreateNotifications < ActiveRecord::Migration[6.1]
     create_table :notifications do |t|
       t.string     :uid, null: false
       t.references :group, null: false, foreign_key: true
+      t.string     :notification_title
       t.text :notification_content
 
       t.timestamps
