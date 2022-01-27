@@ -3,6 +3,7 @@ class CreateSubjects < ActiveRecord::Migration[6.1]
     create_table :subjects do |t|
       t.references :school, null: false, foreign_key: true
       t.string :subject_name
+      t.boolean :subject_is_secret
 
       t.timestamps
     end
