@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(version: 2022_01_04_060202) do
   create_table "notifications", force: :cascade do |t|
     t.string "uid", null: false
     t.integer "group_id", null: false
+    t.string "notification_title"
     t.text "notification_content"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
