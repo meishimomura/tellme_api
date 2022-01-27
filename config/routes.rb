@@ -11,8 +11,11 @@ Rails.application.routes.draw do
         resources :sessions, only: %i[index]
       end
 
-      resources :schools
-      resources :groups
+      namespace :student do
+        resources :subjects, only: %i[show]
+      end
+
+      resources :schools, :groups
     end
   end
 end
