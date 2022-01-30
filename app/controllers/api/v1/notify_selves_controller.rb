@@ -1,5 +1,5 @@
 class Api::V1::NotifySelvesController < ApplicationController
-  before_action :authenticate_api_v1_user!
+  # before_action :authenticate_api_v1_user!
   before_action :set_notify_self, only: [:show, :update, :destroy]
 
   def index
@@ -53,7 +53,7 @@ class Api::V1::NotifySelvesController < ApplicationController
   end
 
   def notify_self_params
-    params.permit(:notify_type, :to_uid, :from_uid, :comment_id)
+    params.permit(:notify_type, :to_uid, :from_uid, :comment_id, :notify_is_checked)
   end
 
 end
