@@ -25,7 +25,6 @@ ActiveRecord::Schema.define(version: 2022_01_04_060202) do
     t.string "uid", null: false
     t.integer "parent_comment_id"
     t.text "comment_content"
-    t.boolean "comment_is_checked", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["parent_comment_id"], name: "index_comments_on_parent_comment_id"
