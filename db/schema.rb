@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(version: 2022_01_30_151236) do
 
   create_table "notify_selves", force: :cascade do |t|
     t.integer "notify_type"
+    t.boolean "notify_is_checked", default: false
     t.string "to_uid", null: false
     t.string "from_uid", null: false
     t.integer "comment_id"
