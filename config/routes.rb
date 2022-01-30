@@ -12,10 +12,16 @@ Rails.application.routes.draw do
       end
 
       namespace :student do
-        resources :subjects, only: %i[show]
+        resources :subjects, only: %i[index]
       end
 
-      resources :schools, :groups, :subjects, :notifications
+      resources :schools
+      resources :groups
+      resources :subjects
+      get '/notifications/group_index', to: 'notifications#group_index'
+      get '/notifications/user_index', to: 'notifications#user_index'
+      resources :notifications
+      resources :notification_checks
     end
   end
 end

@@ -1,7 +1,6 @@
 class Comment < ApplicationRecord
   belongs_to :subject
   belongs_to :user, foreign_key: :uid
-  belongs_to :parent_comment_id, class_name: 'Comments'
-  has_many :child_comments, class_name: 'Comments', foreign_key: 'parent_comment_id', dependent: :nullify
-  has_many :comments, dependent: :destroy
+  belongs_to :original_comment, class_name: 'Comment', foreign_key: 'parent_comment_id', optional: true
+  has_many :replies, class_name: 'Comment', foreign_key: 'parent_comment_id', dependent: :destroy
 end

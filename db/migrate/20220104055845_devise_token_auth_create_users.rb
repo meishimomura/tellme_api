@@ -34,7 +34,7 @@ class DeviseTokenAuthCreateUsers < ActiveRecord::Migration[6.1]
       t.string :user_image
       t.string :email
       t.references :school, null: false, foreign_key: true
-      t.references :group, null: false, foreign_key: true
+      t.references :group, foreign_key: true
       t.boolean :user_is_student
 
       ## Tokens

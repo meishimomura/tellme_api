@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 2022_01_04_060202) do
   create_table "subjects", force: :cascade do |t|
     t.integer "school_id", null: false
     t.string "subject_name"
+    t.boolean "subject_is_secret"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["school_id"], name: "index_subjects_on_school_id"
@@ -115,7 +116,7 @@ ActiveRecord::Schema.define(version: 2022_01_04_060202) do
     t.string "user_image"
     t.string "email"
     t.integer "school_id", null: false
-    t.integer "group_id", null: false
+    t.integer "group_id"
     t.boolean "user_is_student"
     t.text "tokens"
     t.datetime "created_at", precision: 6, null: false
