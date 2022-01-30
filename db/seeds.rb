@@ -148,6 +148,28 @@ end
   end
 end
 
+4.times do |i|
+  NotifySelf.create! do |t|
+    t.id = i + 1
+    t.notify_type = 1
+    t.to_uid = "test1@example.com"
+    t.from_uid = "test7@example.com"
+    t.comment_id = i + 14
+    t.notify_is_checked = true
+  end
+end
+
+4.times do |i|
+  NotifySelf.create! do |t|
+    t.id = i + 5
+    t.notify_type = 1
+    t.to_uid = "test1@example.com"
+    t.from_uid = "test7@example.com"
+    t.comment_id = i + 18
+    t.notify_is_checked = false
+  end
+end
+
 user_names.each_with_index do |user_name, index|
   Vote.create! do |t|
     t.id = index + 1

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_04_060202) do
+ActiveRecord::Schema.define(version: 2022_01_30_151236) do
 
   create_table "comment_images", force: :cascade do |t|
     t.integer "comment_id", null: false
@@ -84,6 +84,17 @@ ActiveRecord::Schema.define(version: 2022_01_04_060202) do
     t.index ["group_id"], name: "index_notifications_on_group_id"
   end
 
+  create_table "notify_selves", force: :cascade do |t|
+    t.integer "notify_type"
+    t.boolean "notify_is_checked", default: false
+    t.string "to_uid", null: false
+    t.string "from_uid", null: false
+    t.integer "comment_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["comment_id"], name: "index_notify_selves_on_comment_id"
+  end
+
   create_table "schools", force: :cascade do |t|
     t.string "school_name"
     t.string "school_image_path"
@@ -150,6 +161,9 @@ ActiveRecord::Schema.define(version: 2022_01_04_060202) do
   add_foreign_key "notification_checks", "users", column: "uid", primary_key: "uid"
   add_foreign_key "notifications", "groups"
   add_foreign_key "notifications", "users", column: "uid", primary_key: "uid"
+  add_foreign_key "notify_selves", "comments"
+  add_foreign_key "notify_selves", "users", column: "from_uid", primary_key: "uid"
+  add_foreign_key "notify_selves", "users", column: "to_uid", primary_key: "uid"
   add_foreign_key "subjects", "schools"
   add_foreign_key "users", "groups"
   add_foreign_key "users", "schools"

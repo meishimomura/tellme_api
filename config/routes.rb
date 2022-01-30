@@ -25,6 +25,8 @@ Rails.application.routes.draw do
       resources :group_directors
       get '/comments/all/:id', to: 'comments#all_show'
       resources :comments
+      get '/notify_selves/user', to: 'notify_selves#user_index'
+      resources :notify_selves
     end
   end
 end
