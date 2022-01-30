@@ -36,6 +36,12 @@ end
   end
 end
 
+GroupDirector.create! do |t|
+  t.id = 6
+  t.subject_id = 8
+  t.group_id = 1
+end
+
 user_names = ["下村芽生", "田中智", "佐藤克", "竹内美咲", "本田智子"]
 user_names.each_with_index do |user_name, index|
   User.create! do |t|
