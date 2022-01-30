@@ -5,7 +5,7 @@ class CreateComments < ActiveRecord::Migration[6.1]
       t.string     :uid, null: false
       t.references :parent_comment
       t.text :comment_content
-      t.boolean :comment_is_checked
+      t.boolean :comment_is_checked, null: false, default: false
 
       t.timestamps
     end
