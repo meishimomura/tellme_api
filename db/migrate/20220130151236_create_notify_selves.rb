@@ -4,6 +4,7 @@ class CreateNotifySelves < ActiveRecord::Migration[6.1]
       t.integer :notify_type
       t.string     :to_uid, null: false
       t.string     :from_uid, null: false
+      t.references :comment, foreign_key: true
 
       t.timestamps
     end
