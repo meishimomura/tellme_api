@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       get '/notifications/user_index', to: 'notifications#user_index'
       resources :notifications
       resources :notification_checks
+      resources :group_directors
     end
   end
 end
