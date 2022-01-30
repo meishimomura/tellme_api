@@ -23,6 +23,8 @@ Rails.application.routes.draw do
       resources :notifications
       resources :notification_checks
       resources :group_directors
+      get '/comments/all/:id', to: 'comments#all_show'
+      resources :comments
     end
   end
 end
