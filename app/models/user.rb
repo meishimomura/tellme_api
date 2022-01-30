@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   self.primary_key = :uid
 
   belongs_to :school
-  belongs_to :group
+  belongs_to :group, optional: true
   has_many :notifications, dependent: :destroy, inverse_of: 'user', foreign_key: :uid
   has_many :notification_checks, dependent: :destroy, inverse_of: 'user', foreign_key: :uid
   has_many :course_directors, dependent: :destroy, inverse_of: 'user', foreign_key: :uid
