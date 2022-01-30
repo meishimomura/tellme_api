@@ -16,4 +16,6 @@ class User < ActiveRecord::Base
   has_many :course_directors, dependent: :destroy, inverse_of: 'user', foreign_key: :uid
   has_many :comments, dependent: :destroy, inverse_of: 'user', foreign_key: :uid
   has_many :votes, dependent: :destroy, inverse_of: 'user', foreign_key: :uid
+  has_many :notify_selves, dependent: :destroy, inverse_of: 'user', foreign_key: :to_uid
+  has_many :notify_selves, dependent: :destroy, inverse_of: 'user', foreign_key: :from_uid
 end
