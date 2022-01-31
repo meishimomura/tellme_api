@@ -27,6 +27,7 @@ Rails.application.routes.draw do
       resources :comments
       get '/notify_selves/user', to: 'notify_selves#user_index'
       resources :notify_selves
+      get '/textpair/:id', to: 'textpair#show'
     end
   end
 end
