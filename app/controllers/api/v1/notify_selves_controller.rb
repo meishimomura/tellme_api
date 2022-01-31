@@ -1,5 +1,5 @@
 class Api::V1::NotifySelvesController < ApplicationController
-  # before_action :authenticate_api_v1_user!
+  before_action :authenticate_api_v1_user!
   before_action :set_notify_self, only: [:show, :update, :destroy]
 
   def index
