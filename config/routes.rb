@@ -28,6 +28,8 @@ Rails.application.routes.draw do
       get '/notify_selves/user', to: 'notify_selves#user_index'
       resources :notify_selves
       get '/textpair/:id', to: 'textpair#show'
+      get '/votes/count/:id', to: 'votes#count'
+      resources :votes
     end
   end
 end
