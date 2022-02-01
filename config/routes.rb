@@ -27,6 +27,7 @@ Rails.application.routes.draw do
       get '/textpair/:id', to: 'textpair#show'
       get '/votes/count/:id', to: 'votes#count'
       resources :votes
+      resources :users, only: %i[index]
     end
   end
 end
