@@ -76,6 +76,18 @@ CourseDirector.create! do |t|
   t.uid = "test6@example.com"
 end
 
+CourseDirector.create! do |t|
+  t.id = 2
+  t.subject_id = 6
+  t.uid = "test6@example.com"
+end
+
+CourseDirector.create! do |t|
+  t.id = 3
+  t.subject_id = 7
+  t.uid = "test6@example.com"
+end
+
 2.times do |i|
   5.times do |j|
     Notification.create! do |t|

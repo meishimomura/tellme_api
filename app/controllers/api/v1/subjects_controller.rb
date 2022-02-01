@@ -33,6 +33,15 @@ class Api::V1::SubjectsController < ApplicationController
     end
   end
 
+  def user_index
+    if current_api_v1_user.user_is_student
+      subjects = Subject.where(id: GroupDirector.where(group_id: current_api_v1_user.group_id).select("group_directors.subject_id"))
+    else
+      subjects = Subject.where(id: CourseDirector.where(uid: current_api_v1_user.uid).select("course_directors.subject_id"))
+    end
+    render json: { status: 'SUCCESS', message: 'Loaded the subjects', data: subjects }
+  end
+  
   private
 
   def set_subject
