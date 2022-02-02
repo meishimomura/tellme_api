@@ -15,8 +15,7 @@ Rails.application.routes.draw do
       resources :groups
       get '/subjects/user', to: 'subjects#user_index'
       resources :subjects
-      get '/notifications/group_index', to: 'notifications#group_index'
-      get '/notifications/user_index', to: 'notifications#user_index'
+      get '/notifications/user', to: 'notifications#user_index'
       resources :notifications
       resources :notification_checks
       resources :group_directors
