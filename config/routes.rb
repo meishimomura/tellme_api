@@ -19,6 +19,8 @@ Rails.application.routes.draw do
       resources :notifications
       resources :notification_checks
       resources :group_directors
+      get '/comments/common', to: 'comments#common_index'
+      get '/comments/all', to: 'comments#all_index'
       get '/comments/all/:id', to: 'comments#all_show'
       resources :comments
       get '/notify_selves/user', to: 'notify_selves#user_index'
