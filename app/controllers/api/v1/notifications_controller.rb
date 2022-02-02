@@ -33,7 +33,7 @@ class Api::V1::NotificationsController < ApplicationController
     end
   end
 
-  def group_index
+  def user_index
     query = <<~TEXT
       SELECT "notifications".*, "a"."uid" AS student_uid
       FROM "notifications"
@@ -50,13 +50,11 @@ class Api::V1::NotificationsController < ApplicationController
       WHERE "notifications"."group_id" = ?
       ORDER BY "created_at" DESC
     TEXT
-    notifications = Notification.find_by_sql([query, current_api_v1_user.uid, current_api_v1_user.group_id])
-
-    render json: { status: 'SUCCESS', message: 'Loaded notifications', data: notifications }
-  end
-
-  def user_index
-    notifications = Notification.where(uid: current_api_v1_user.uid).order(created_at: :desc)
+    if current_api_v1_user.user_is_student
+      notifications = Notification.find_by_sql([query, current_api_v1_user.uid, current_api_v1_user.group_id])
+    else
+      notifications = Notification.where(group_id: GroupOwner.where(uid: current_api_v1_user.uid).select("group_owners.group_id")).order(created_at: :desc)
+    end
     render json: { status: 'SUCCESS', message: 'Loaded notifications', data: notifications }
   end
   
