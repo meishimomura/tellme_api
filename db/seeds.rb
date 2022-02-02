@@ -11,6 +11,27 @@ Group.create! do |t|
   t.school_id = 1
 end
 
+Group.create! do |t|
+  t.id = 2
+  t.group_name = "2-1"
+  t.group_grade = 2
+  t.school_id = 1
+end
+
+Group.create! do |t|
+  t.id = 3
+  t.group_name = "3-1"
+  t.group_grade = 3
+  t.school_id = 1
+end
+
+Group.create! do |t|
+  t.id = 4
+  t.group_name = "1-2"
+  t.group_grade = 1
+  t.school_id = 1
+end
+
 subject_names = ["1年国語", "1年数学", "1年英語", "1年理科", "1年社会", "2年国語", "3年国語"]
 subject_names.each_with_index do |subject_name, index|
   Subject.create! do |t|
@@ -63,7 +84,7 @@ teacher_names.each_with_index do |teacher_name, index|
     t.user_name = teacher_name
     t.user_image = ''
     t.school_id = 1
-    t.group_id = 1
+    t.group_id = nil
     t.password = 'password'
     t.password_confirmation = 'password'
     t.user_is_student = false
@@ -88,11 +109,19 @@ CourseDirector.create! do |t|
   t.uid = "test6@example.com"
 end
 
+3.times do |i|
+  GroupOwner.create! do |t|
+    t.id = i + 1
+    t.uid = "test6@example.com"
+    t.group_id = i + 1
+  end
+end
+
 2.times do |i|
   5.times do |j|
     Notification.create! do |t|
       t.id = 5 * i + j + 1
-      t.uid = "test#{j + 6}@example.com"
+      t.uid = "test#{i + 6}@example.com"
       t.group_id = 1
       t.notification_title = "1組の数学の学期末テスト範囲について"
       t.notification_content = <<~TEXT
@@ -110,6 +139,26 @@ end
       TEXT
     end
   end
+end
+
+Notification.create! do |t|
+  t.id = 11
+  t.uid = "test8@example.com"
+  t.group_id = 4
+  t.notification_title = "2組の数学の学期末テスト範囲について"
+  t.notification_content = <<~TEXT
+    2/18(水)が数学の学期末テストになります。
+    以下がテスト範囲になりますが、テスト範囲以外からも、今まで習った内容を出題します。
+    学期末テストは中間テストに比べ、出題範囲が広いです。
+    今のうちからコツコツ勉強をしましょう。
+    【教科書】
+    ３章 方程式
+    Ｐ.８２～P.１１１
+    ４章 比例と反比例
+    Ｐ.１０４～P.１１５
+    【ワーク】
+    P.５２～P.７３
+  TEXT
 end
 
 7.times do |i|
