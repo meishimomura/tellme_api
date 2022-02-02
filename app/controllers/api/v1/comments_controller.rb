@@ -33,6 +33,44 @@ class Api::V1::CommentsController < ApplicationController
     end
   end
 
+  def common_index
+    query = <<~TEXT
+      SELECT comments.*, users.user_name, users.user_is_student, subjects.subject_name FROM comments
+      INNER JOIN users USING(uid)
+      INNER JOIN subjects
+      ON comments.subject_id = subjects.id
+      WHERE comments.subject_id IN
+      (
+        SELECT subject_id FROM group_directors
+        INNER JOIN users USING(group_id)
+        WHERE group_id = ?
+      )
+      AND parent_comment_id IS NULL
+      AND subjects.subject_is_secret = false
+      ORDER BY "created_at" DESC;
+    TEXT
+    comments = Comment.find_by_sql([query, current_api_v1_user.group_id])
+    render json: { status: 'SUCCESS', message: 'Loaded comments', data: comments }
+  end
+  
+  def all_index
+    query = <<~TEXT
+      SELECT comments.*, users.user_name, users.user_is_student, subjects.subject_name FROM comments
+      INNER JOIN users USING(uid)
+      INNER JOIN subjects
+      ON comments.subject_id = subjects.id
+      WHERE comments.subject_id IN
+      (
+        SELECT subject_id FROM course_directors
+        WHERE uid = ?
+      )
+      AND parent_comment_id IS NULL
+      ORDER BY "created_at" DESC;
+    TEXT
+    comments = Comment.find_by_sql([query, current_api_v1_user.uid])
+    render json: { status: 'SUCCESS', message: 'Loaded comments', data: comments }
+  end
+
   def all_show
     query = <<~TEXT
       WITH RECURSIVE r AS (
@@ -60,7 +98,7 @@ class Api::V1::CommentsController < ApplicationController
   end
 
   def comment_params
-    params.permit(:subject_id, :uid, :parent_comment_id, :comment_content)
+    params.permit(:subject_id, :uid, :parent_comment_id, :comment_content, :comment_is_settled)
   end
 
 end
