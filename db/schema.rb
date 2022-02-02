@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_30_151236) do
+ActiveRecord::Schema.define(version: 2022_02_02_021823) do
 
   create_table "comment_images", force: :cascade do |t|
     t.integer "comment_id", null: false
@@ -46,6 +46,14 @@ ActiveRecord::Schema.define(version: 2022_01_30_151236) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["group_id"], name: "index_group_directors_on_group_id"
     t.index ["subject_id"], name: "index_group_directors_on_subject_id"
+  end
+
+  create_table "group_owners", force: :cascade do |t|
+    t.string "uid", null: false
+    t.integer "group_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["group_id"], name: "index_group_owners_on_group_id"
   end
 
   create_table "groups", force: :cascade do |t|
@@ -155,6 +163,8 @@ ActiveRecord::Schema.define(version: 2022_01_30_151236) do
   add_foreign_key "course_directors", "users", column: "uid", primary_key: "uid"
   add_foreign_key "group_directors", "groups"
   add_foreign_key "group_directors", "subjects"
+  add_foreign_key "group_owners", "groups"
+  add_foreign_key "group_owners", "users", column: "uid", primary_key: "uid"
   add_foreign_key "groups", "schools"
   add_foreign_key "master_users", "schools"
   add_foreign_key "notification_checks", "notifications"
