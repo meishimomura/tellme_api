@@ -35,8 +35,9 @@ class Api::V1::NotificationsController < ApplicationController
 
   def user_index
     query = <<~TEXT
-      SELECT "notifications".*, "a"."uid" AS student_uid
+      SELECT "notifications".*, "a"."uid" AS student_uid, "users"."user_name"
       FROM "notifications"
+      INNER JOIN users USING(uid)
       LEFT OUTER JOIN (
         SELECT
           "notification_checks"."notification_id",
