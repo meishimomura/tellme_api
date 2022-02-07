@@ -14,7 +14,8 @@ class Api::V1::CommentsController < ApplicationController
   def create
     comment = Comment.new(comment_params)
     if comment.save
-      render json: { status: 'SUCCESS', data: comment }
+      comment_data = Comment.joins(:user).joins(:subject).select("comments.*, users.user_name, users.user_is_student, subjects.subject_name, subjects.subject_is_secret").find(comment.id)
+      render json: { status: 'SUCCESS', data: comment_data }
     else
       render json: { status: 'ERROR', data: comment.errors }
     end
@@ -35,7 +36,7 @@ class Api::V1::CommentsController < ApplicationController
 
   def common_index
     query = <<~TEXT
-      SELECT comments.*, users.user_name, users.user_is_student, subjects.subject_name FROM comments
+      SELECT comments.*, users.user_name, users.user_is_student, subjects.subject_name, subjects.subject_is_secret FROM comments
       INNER JOIN users USING(uid)
       INNER JOIN subjects
       ON comments.subject_id = subjects.id
@@ -55,7 +56,7 @@ class Api::V1::CommentsController < ApplicationController
   
   def all_index
     query = <<~TEXT
-      SELECT comments.*, users.user_name, users.user_is_student, subjects.subject_name FROM comments
+      SELECT comments.*, users.user_name, users.user_is_student, subjects.subject_name, subjects.subject_is_secret FROM comments
       INNER JOIN users USING(uid)
       INNER JOIN subjects
       ON comments.subject_id = subjects.id
@@ -78,7 +79,7 @@ class Api::V1::CommentsController < ApplicationController
         UNION ALL
         SELECT comments.* FROM comments, r WHERE comments.parent_comment_id = r.id
       )
-      SELECT r.*, users.user_name, users.user_is_student, subjects.subject_name FROM r
+      SELECT r.*, users.user_name, users.user_is_student, subjects.subject_name, subjects.subject_is_secret FROM r
       INNER JOIN
       users
       ON r.uid = users.uid
