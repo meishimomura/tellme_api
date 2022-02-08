@@ -28,7 +28,24 @@ class Api::V1::CommentsController < ApplicationController
 
   def update
     if @comment.update(comment_params)
-      render json: { status: 'SUCCESS', message: 'Updated the comment', data: @comment }
+      query = <<~TEXT
+      SELECT comments.*, users.user_name, users.user_is_student, subjects.subject_name, subjects.subject_is_secret, COUNT(votes.comment_id) AS vote_count,
+      CASE
+        WHEN COUNT(votes.uid = ?) then true
+        ELSE false
+      END AS voted
+      FROM comments
+      INNER JOIN users USING(uid)
+      INNER JOIN subjects
+      ON comments.subject_id = subjects.id
+      LEFT JOIN votes
+      ON comments.id = votes.comment_id
+      WHERE comments.id = ?
+      GROUP BY comments.id
+      ORDER BY "created_at" DESC;
+    TEXT
+    comment = Comment.find_by_sql([query, current_api_v1_user.uid, @comment.id])
+      render json: { status: 'SUCCESS', message: 'Updated the comment', data: comment }
     else
       render json: { status: 'SUCCESS', message: 'Not updated', data: @comment.errors }
     end
@@ -36,10 +53,17 @@ class Api::V1::CommentsController < ApplicationController
 
   def common_index
     query = <<~TEXT
-      SELECT comments.*, users.user_name, users.user_is_student, subjects.subject_name, subjects.subject_is_secret FROM comments
+      SELECT comments.*, users.user_name, users.user_is_student, subjects.subject_name, subjects.subject_is_secret, COUNT(votes.comment_id) AS vote_count,
+      CASE
+        WHEN COUNT(votes.uid = ?) then true
+        ELSE false
+      END AS voted
+      FROM comments
       INNER JOIN users USING(uid)
       INNER JOIN subjects
       ON comments.subject_id = subjects.id
+      LEFT JOIN votes
+      ON comments.id = votes.comment_id
       WHERE comments.subject_id IN
       (
         SELECT subject_id FROM group_directors
@@ -48,27 +72,36 @@ class Api::V1::CommentsController < ApplicationController
       )
       AND parent_comment_id IS NULL
       AND subjects.subject_is_secret = false
+      GROUP BY comments.id
       ORDER BY "created_at" DESC;
     TEXT
-    comments = Comment.find_by_sql([query, current_api_v1_user.group_id])
+    comments = Comment.find_by_sql([query, current_api_v1_user.uid, current_api_v1_user.group_id])
     render json: { status: 'SUCCESS', message: 'Loaded comments', data: comments }
   end
-  
+
   def all_index
     query = <<~TEXT
-      SELECT comments.*, users.user_name, users.user_is_student, subjects.subject_name, subjects.subject_is_secret FROM comments
+      SELECT comments.*, users.user_name, users.user_is_student, subjects.subject_name, subjects.subject_is_secret, COUNT(votes.comment_id) AS vote_count,
+      CASE
+        WHEN COUNT(votes.uid = ?) then true
+        ELSE false
+      END AS voted
+      FROM comments
       INNER JOIN users USING(uid)
       INNER JOIN subjects
       ON comments.subject_id = subjects.id
+      LEFT JOIN votes
+      ON comments.id = votes.comment_id
       WHERE comments.subject_id IN
       (
         SELECT subject_id FROM course_directors
         WHERE uid = ?
       )
       AND parent_comment_id IS NULL
+      GROUP BY comments.id
       ORDER BY "created_at" DESC;
     TEXT
-    comments = Comment.find_by_sql([query, current_api_v1_user.uid])
+    comments = Comment.find_by_sql([query, current_api_v1_user.uid, current_api_v1_user.uid])
     render json: { status: 'SUCCESS', message: 'Loaded comments', data: comments }
   end
 
@@ -79,23 +112,34 @@ class Api::V1::CommentsController < ApplicationController
         UNION ALL
         SELECT comments.* FROM comments, r WHERE comments.parent_comment_id = r.id
       )
-      SELECT r.*, users.user_name, users.user_is_student, subjects.subject_name, subjects.subject_is_secret FROM r
+      SELECT r.*, users.user_name, users.user_is_student, subjects.subject_name, subjects.subject_is_secret,
+      COUNT(votes.comment_id) AS vote_count,
+      CASE
+        WHEN COUNT(votes.uid = ?) then true
+        ELSE false
+      END AS voted
+      FROM r
       INNER JOIN
       users
       ON r.uid = users.uid
       INNER JOIN
       subjects
       ON r.subject_id = subjects.id
+      LEFT JOIN votes
+      ON r.id = votes.comment_id
+      GROUP BY r.id
       ORDER BY "created_at" ASC;
     TEXT
-    comments = Comment.find_by_sql([query, params[:id]])
+    comments = Comment.find_by_sql([query, params[:id], current_api_v1_user.uid])
+    count = Vote.where(comment_id: params[:id]).count
+    voted = Vote.exists?(comment_id: params[:id], uid: current_api_v1_user.uid)
     render json: { status: 'SUCCESS', message: 'Loaded comments', data: comments }
   end
 
   private
 
   def set_comment
-    @comment = Comment.find(params[:id])
+    @comment = Comment.joins(:user).joins(:subject).select("comments.*, users.user_name, users.user_is_student, subjects.subject_name, subjects.subject_is_secret").find(params[:id])
   end
 
   def comment_params

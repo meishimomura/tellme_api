@@ -1,6 +1,6 @@
 class Api::V1::VotesController < ApplicationController
   before_action :authenticate_api_v1_user!
-  before_action :set_vote, only: [:show, :update, :destroy]
+  before_action :set_vote, only: [:show, :update]
 
   def index
     votes = Vote.order(created_at: :desc)
@@ -21,8 +21,9 @@ class Api::V1::VotesController < ApplicationController
   end
 
   def destroy
-    @vote.destroy
-    render json: { status: 'SUCCESS', message: 'Deleted the vote', data: @vote }
+    vote = Vote.find_by(comment_id: params[:id], uid: current_api_v1_user.uid)
+    vote.destroy
+    render json: { status: 'SUCCESS', message: 'Deleted the vote', data: vote }
   end
 
   def update
