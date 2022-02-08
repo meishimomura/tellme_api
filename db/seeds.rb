@@ -45,7 +45,7 @@ end
 Subject.create! do |t|
   t.id = 8
   t.school_id = 1
-  t.subject_name = "スクールカウンセラーの部屋"
+  t.subject_name = "スクールカウンセラー"
   t.subject_is_secret = true
 end
 
