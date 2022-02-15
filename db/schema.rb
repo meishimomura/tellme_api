@@ -12,20 +12,14 @@
 
 ActiveRecord::Schema.define(version: 2022_02_02_021823) do
 
-  create_table "comment_images", force: :cascade do |t|
-    t.integer "comment_id", null: false
-    t.string "comment_image_path"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["comment_id"], name: "index_comment_images_on_comment_id"
-  end
-
   create_table "comments", force: :cascade do |t|
     t.integer "subject_id", null: false
     t.string "uid", null: false
     t.integer "parent_comment_id"
     t.text "comment_content"
     t.boolean "comment_is_settled", default: false
+    t.string "comment_image_path"
+    t.text "comment_image_text"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["parent_comment_id"], name: "index_comments_on_parent_comment_id"
@@ -156,7 +150,6 @@ ActiveRecord::Schema.define(version: 2022_02_02_021823) do
     t.index ["comment_id"], name: "index_votes_on_comment_id"
   end
 
-  add_foreign_key "comment_images", "comments"
   add_foreign_key "comments", "comments", column: "parent_comment_id"
   add_foreign_key "comments", "subjects"
   add_foreign_key "comments", "users", column: "uid", primary_key: "uid"

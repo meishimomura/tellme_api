@@ -5,4 +5,6 @@ class Comment < ApplicationRecord
   has_many :replies, class_name: 'Comment', foreign_key: 'parent_comment_id', dependent: :destroy
   has_many :votes, dependent: :destroy
   has_many :notify_selves, dependent: :destroy
+
+  mount_uploader :comment_image_path, ImageUploader
 end
