@@ -6,6 +6,8 @@ class CreateComments < ActiveRecord::Migration[6.1]
       t.references :parent_comment
       t.text :comment_content
       t.boolean :comment_is_settled, default: false
+      t.string  :comment_image_path
+      t.text :comment_image_text
       
 
       t.timestamps
