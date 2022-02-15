@@ -178,6 +178,8 @@ end
     t.comment_content = <<~TEXT
       助詞助動詞の違いが分かりません。教えてください。
     TEXT
+    t.comment_image_path = nil
+    t.comment_image_text = nil
   end
 end
 
@@ -193,6 +195,8 @@ comment_contents.each_with_index do |comment_content, index|
     t.uid = "test2@example.com"
     t.parent_comment_id = nil
     t.comment_content = comment_content
+    t.comment_image_path = nil
+    t.comment_image_text = nil
   end
 end
 
@@ -206,6 +210,8 @@ end
       違いは、いくつかありますが、大きな違いは、活用（語形変化）するかどうかです。
       例えば、打消しの助動詞「ない」は「なかろ（う）、なく、ない、なけれ（ば）」と活用（語形変化）しますが、助詞の「が」は、活用（語形変化）しません。
     TEXT
+    t.comment_image_path = nil
+    t.comment_image_text = nil
   end
 end
 
