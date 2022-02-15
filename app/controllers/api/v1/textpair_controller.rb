@@ -42,7 +42,11 @@ class Api::V1::TextpairController < ApplicationController
             subject_name: other_comment.subject_name,
             subject_is_secret: other_comment.subject_is_secret,
             vote_count: other_comment.vote_count,
-            voted: other_comment.voted
+            voted: other_comment.voted,
+            comment_image_path: {
+              url: other_comment.comment_image_path.url
+            },
+            comment_image_text: other_comment.comment_image_text
           }
           near_comments.push(comment_data)
         end
