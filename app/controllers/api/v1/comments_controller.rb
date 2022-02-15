@@ -13,6 +13,7 @@ class Api::V1::CommentsController < ApplicationController
 
   def create
     comment = Comment.new(comment_params)
+    comment.comment_image_text = ""
     if comment.save
       comment_data = Comment.joins(:user).joins(:subject).select("comments.*, users.user_name, users.user_is_student, subjects.subject_name, subjects.subject_is_secret").find(comment.id)
       render json: { status: 'SUCCESS', data: comment_data }
@@ -143,7 +144,7 @@ class Api::V1::CommentsController < ApplicationController
   end
 
   def comment_params
-    params.permit(:subject_id, :uid, :parent_comment_id, :comment_content, :comment_is_settled)
+    params.permit(:subject_id, :uid, :parent_comment_id, :comment_content, :comment_is_settled, :comment_image_path)
   end
 
 end
