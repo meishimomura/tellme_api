@@ -1,5 +1,12 @@
 CarrierWave.configure do |config|
-  config.asset_host = "http://localhost:3001"
-  config.storage = :file
-  config.cache_storage = :file
+  config.fog_credentials = {
+    provider: 'AWS',
+    aws_access_key_id: Rails.application.credentials.aws[:access_key_id],
+    aws_secret_access_key: Rails.application.credentials.aws[:secret_access_key],
+    region: Rails.application.credentials.aws[:region]
+  }
+
+  config.fog_directory  = Rails.application.credentials.aws[:fog_directory]
+  config.cache_storage = :fog
+  config.fog_public = false
 end
