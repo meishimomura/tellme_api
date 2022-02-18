@@ -45,4 +45,4 @@ gem 'dotenv-rails'
 gem 'httpclient'
 gem 'carrierwave'
 gem 'google-cloud-vision', "~> 0.32.0"
-gem 'fog'
+gem 'fog-aws'
