@@ -23,6 +23,40 @@ class Api::V1::TextpairController < ApplicationController
     other_comments = Comment.find_by_sql([query, current_api_v1_user.uid, comment.subject_id, params[:id]])
     near_comments = []
     other_comments.each do |other_comment|
+      if !comment.comment_image_text.nil? && !other_comment.comment_image_text.nil?
+        image_textpair = Api::Textpair::Request.new(comment.comment_image_text, other_comment.comment_image_text)
+        image_textpair_response = image_textpair.request
+        if image_textpair_response.header.status_code == 200
+          respons_body = JSON.parse(image_textpair_response.body)
+          if respons_body["score"] >= 0.6
+            comment_data = {
+              id: other_comment.id,
+              subject_id: other_comment.subject_id,
+              uid: other_comment.uid,
+              parent_comment_id: other_comment.parent_comment_id,
+              comment_content: other_comment.comment_content,
+              comment_is_settled: other_comment.comment_is_settled,
+              created_at: other_comment.created_at,
+              updated_at: other_comment.updated_at,
+              user_name: other_comment.user_name,
+              user_is_student: other_comment.user_is_student,
+              subject_name: other_comment.subject_name,
+              subject_is_secret: other_comment.subject_is_secret,
+              vote_count: other_comment.vote_count,
+              voted: other_comment.voted,
+              comment_image_path: {
+                url: other_comment.comment_image_path.url
+              },
+              comment_image_text: other_comment.comment_image_text
+            }
+            near_comments.push(comment_data)
+          end
+          next
+        else
+          render json: { status: 'ERROR' }
+          break
+        end
+      end
       textpair = Api::Textpair::Request.new(comment.comment_content, other_comment.comment_content)
       response = textpair.request
       if response.header.status_code == 200
