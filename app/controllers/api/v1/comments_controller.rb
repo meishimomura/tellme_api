@@ -15,11 +15,13 @@ class Api::V1::CommentsController < ApplicationController
 
   def create
     comment = Comment.new(comment_params)
-    image_annotator = Google::Cloud::Vision::ImageAnnotator.new
-    file_path = comment.comment_image_path.url
-    response = image_annotator.text_detection(image: file_path)
-    response.responses.each do |res|
-      comment.comment_image_text = res.text_annotations[0].description
+    if comment.comment_image_path.url
+      image_annotator = Google::Cloud::Vision::ImageAnnotator.new
+      file_path = comment.comment_image_path.url
+      response = image_annotator.text_detection(image: file_path)
+      response.responses.each do |res|
+        comment.comment_image_text = res.text_annotations[0].description
+      end
     end
     if comment.save
       comment_data = Comment.joins(:user).joins(:subject).select("comments.*, users.user_name, users.user_is_student, subjects.subject_name, subjects.subject_is_secret").find(comment.id)
