@@ -7,11 +7,13 @@ class CreateNotifySelves < ActiveRecord::Migration[6.1]
       t.string     :from_uid, null: false
       
       t.references :comment, foreign_key: true
+      t.references :parent_comment
 
       t.timestamps
     end
 
     add_foreign_key :notify_selves, :users, column: :to_uid, primary_key: :uid
     add_foreign_key :notify_selves, :users, column: :from_uid, primary_key: :uid
+    add_foreign_key :notify_selves, :comments, column: 'parent_comment_id'
   end
 end
