@@ -93,9 +93,11 @@ ActiveRecord::Schema.define(version: 2022_02_02_021823) do
     t.string "to_uid", null: false
     t.string "from_uid", null: false
     t.integer "comment_id"
+    t.integer "parent_comment_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["comment_id"], name: "index_notify_selves_on_comment_id"
+    t.index ["parent_comment_id"], name: "index_notify_selves_on_parent_comment_id"
   end
 
   create_table "schools", force: :cascade do |t|
@@ -166,6 +168,7 @@ ActiveRecord::Schema.define(version: 2022_02_02_021823) do
   add_foreign_key "notifications", "groups"
   add_foreign_key "notifications", "users", column: "uid", primary_key: "uid"
   add_foreign_key "notify_selves", "comments"
+  add_foreign_key "notify_selves", "comments", column: "parent_comment_id"
   add_foreign_key "notify_selves", "users", column: "from_uid", primary_key: "uid"
   add_foreign_key "notify_selves", "users", column: "to_uid", primary_key: "uid"
   add_foreign_key "subjects", "schools"
