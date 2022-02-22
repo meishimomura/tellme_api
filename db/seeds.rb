@@ -222,6 +222,7 @@ end
     t.to_uid = "test1@example.com"
     t.from_uid = "test7@example.com"
     t.comment_id = i + 14
+    t.parent_comment_id = i + 1
     t.notify_is_checked = true
   end
 end
@@ -233,6 +234,7 @@ end
     t.to_uid = "test1@example.com"
     t.from_uid = "test7@example.com"
     t.comment_id = i + 18
+    t.parent_comment_id = i + 5
     t.notify_is_checked = false
   end
 end
