@@ -8,6 +8,7 @@ class Api::V1::NotifySelvesController < ApplicationController
   end
 
   def show
+    comment = @notify_self.comments
     render json: { status: 'SUCCESS', message: 'Loaded the notify self', data: @notify_self }
   end
 
@@ -53,7 +54,7 @@ class Api::V1::NotifySelvesController < ApplicationController
   end
 
   def notify_self_params
-    params.permit(:notify_type, :to_uid, :from_uid, :comment_id, :notify_is_checked)
+    params.permit(:notify_type, :to_uid, :from_uid, :comment_id, :parent_comment_id, :notify_is_checked)
   end
 
 end
